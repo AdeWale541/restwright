@@ -1,0 +1,19 @@
+{
+  "name": "restwright",
+  "version": "1.0.0",
+  "description": "Optimized API testing framework that utilizes Playwright library to build a robust automation testing tool customizable for enterprise API testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdeWale541/restwright.git"
+  },
+  "author": "Adewale Akano <kameelakano@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdeWale541/restwright/issues"
+  },
+  "homepage": "https://github.com/AdeWale541/restwright#readme"
+}
