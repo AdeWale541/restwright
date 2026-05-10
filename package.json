@@ -2,7 +2,11 @@
   "name": "restwright",
   "version": "1.0.0",
   "description": "Optimized API testing framework that utilizes Playwright library to build a robust automation testing tool customizable for enterprise API testing",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "bin": {
+    "restwright": "./bin/restwright.js"
+  },
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +19,19 @@
   "bugs": {
     "url": "https://github.com/AdeWale541/restwright/issues"
   },
-  "homepage": "https://github.com/AdeWale541/restwright#readme"
+  "keywords": [
+    "playwright",
+    "api",
+    "api testing",
+    "node",
+    "node.js",
+    "boilerplate",
+    "generator",
+    "express",
+    "rest"
+  ],
+  "homepage": "https://github.com/AdeWale541/restwright#readme",
+  "dependencies": {
+    "arg": "^5.0.2"
+  }
 }
