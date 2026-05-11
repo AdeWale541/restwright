@@ -1,0 +1,50 @@
+{
+        "database": {
+            "default": false,
+            "args":["--database","-d","--db"]
+        },
+        "databaseType": {
+            "default":null,
+            "args":["--databasetype","--dbt"],
+            "lov":["pg"],
+            "implies": {
+                "database": true
+            }
+        },
+        "typescript": {
+            "default":false,
+            "args":["--typescript","-t","--ts"]
+        },
+        "webhook": {
+            "default":false,
+            "args":["--webhook","-w","--wh"]
+        },
+        "webhookType": {
+            "default":null,
+            "args":["--webhooktype","--wht"],
+            "lov":["slack", "teams"],
+            "implies": {
+                "webhook": true
+            }
+        },
+        "browser": {
+            "default":false,
+            "args":["--browser","-b"]
+        },
+        "browserType": {
+            "default":null,
+            "args":["--browsertype","--bt"],
+            "lov":["chromium", "webkit","firefox"],
+            "implies": {
+                "browser": true
+            }
+        },
+        "mcp": {
+            "default":false,
+            "args":["--mcp","-m"]
+        },
+        "base": {
+            "default":true,
+            "args":["base","--base"]
+        }
+}
