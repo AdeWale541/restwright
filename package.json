@@ -30,8 +30,5 @@
     "express",
     "rest"
   ],
-  "homepage": "https://github.com/AdeWale541/restwright#readme",
-  "dependencies": {
-    "arg": "^5.0.2"
-  }
+  "homepage": "https://github.com/AdeWale541/restwright#readme"
 }
