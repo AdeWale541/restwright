@@ -1,36 +1,67 @@
 // import arg from 'arg'
 //import defaultConfig from './default.json' with { type: 'json' };
 // import { mapArgsToOutput } from './helper/functions.js';
+const {input,select,confirm}= require('@inquirer/prompts')
 
 const defaultConfig= require('./default.json');
-const {mapArgsToOutput}= require('./helper/functions.js')
+const {mapCliArgsToOutput,getUserConfig}= require('./helper/functions.js')
 
 const createProject = async(args)=>{
     const inputs = await getConfig(args)
 }
 
-const getConfig=(rawArgs)=>{
+const getConfig=async(rawArgs)=>{
+    let impConfig={}
+    let packageName= rawArgs[2]
 
-    const packageName= rawArgs[2]
-    const cliArgs = rawArgs.splice(3)    
+    if(!packageName || packageName.startsWith("-") ){
+        packageName = await input({ message: 'Enter the name of your playwright project' });
+    }
+
+    const cliArgs = rawArgs.splice(2)    
     
-    const inputArgs = mapArgsToOutput(cliArgs)
+    const inputArgs = mapCliArgsToOutput(cliArgs)
 
-    console.log("inputArgs",inputArgs);
+    if (inputArgs.default){
+        const keys = Object.keys(defaultConfig)
+        let defInputs={}
 
-    const keys = Object.keys(defaultConfig)
-    const defInputs={}
-    const impConfig={}
+        keys.forEach(key =>{
+            defInputs[key]= defaultConfig[key].default
+            impConfig[key]= inputArgs[key] ? inputArgs[key] : defInputs[key]
+        })
+        return impConfig
+    }
 
-    keys.forEach(key =>{
-        defInputs[key]= defaultConfig[key].default
-        impConfig[key]= inputArgs[key] ? inputArgs[key] : defInputs[key]
+    delete defaultConfig.default
+    let userDefault = await confirm({message:"Do you want to use the default configuration?"})
 
-    })
-    
-    console.log("defInputs",defInputs);
-    console.log("impConfig",impConfig);
-    
+    if (userDefault){
+        const keys = Object.keys(defaultConfig)
+        let defInputs={}
+
+        keys.forEach(key =>{
+            defInputs[key]= defaultConfig[key].default
+            impConfig[key]= inputArgs[key] ? inputArgs[key] : defInputs[key]
+        })
+        return impConfig
+    }
+
+    const inputArgKeys= Object.keys(inputArgs)
+    let questionConfig= defaultConfig
+
+    for (const key of inputArgKeys) {
+        delete questionConfig[key]
+    }
+    // let questions=[]
+    // const questionKeys= Object.keys(modConfig)
+    // for (const key of questionKeys) {
+    //     questions.push(modConfig[key]["question"])
+    // }
+
+    const answerArgs = await getUserConfig(questionConfig)
+
+    impConfig= {...inputArgs,...answerArgs}    
     return impConfig
 }
 

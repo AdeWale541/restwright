@@ -29,5 +29,8 @@
     "generator",
     "rest"
   ],
-  "homepage": "https://github.com/AdeWale541/restwright#readme"
+  "homepage": "https://github.com/AdeWale541/restwright#readme",
+  "dependencies": {
+    "@inquirer/prompts": "^8.4.3"
+  }
 }
