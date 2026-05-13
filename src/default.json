@@ -7,6 +7,14 @@
                 "type": "confirm"
             }
         },
+        "workflow": {
+            "default": true,
+            "args":["--workflow","--wf"],
+            "question": {
+                "value": "Do you want to add a github actions workflow?",
+                "type": "confirm"
+            }
+        },
         "database": {
             "default": false,
             "args":["--database","-d","--db"],
@@ -14,7 +22,6 @@
                 "value": "Do you want to add configuration for database connections and queries?",
                 "type": "confirm"
             }
-
         },
         "databaseType": {
             "default":null,
