@@ -14,7 +14,6 @@ const mapCliArgsToOutput=(args)=>{
         for (const argConfig of argumentConfigs) {
             
             if(!inputArgs[argConfig]
-                // && defaultConfig[argConfig].args.includes(arg)
                 && customIncludes(defaultConfig[argConfig],arg,args)
             ){                
                 const value = getArgValue(defaultConfig[argConfig],arg,args)
