@@ -6,9 +6,10 @@ const { execSync } = require('child_process');
 const {promisify,styleText} = require('util');
 const path = require('path');
 const fs = require('fs');
-const chalk= require('chalk')
-const defaultConfig= require('./default.json');
+const defaultConfig= require('./resources/default.json');
 const {mapCliArgsToOutput,getUserConfig}= require('./helper/functions.js')
+const packageDependencies= require('./resources/dependencies.json')
+
 
 const exec = promisify(require('child_process').exec);
 
@@ -22,12 +23,13 @@ module.exports= createProject = async(args)=>{
 
     await createDirectory(appPath)
     process.chdir(appPath)
-    await createDirectory(appPath)
     await installNPMDependencies()
+    await updatePackageJson(appPath,inputs)
+    await runCmd("npm i")
 }
 
 const getConfig=async(rawArgs)=>{
-    let impConfig={}
+    let impConfig={}    
     let packageName= rawArgs[2]
 
     if(!packageName || packageName.startsWith("-") ){
@@ -83,7 +85,7 @@ const getConfig=async(rawArgs)=>{
 const runCmd= async(command)=>{
   try {
     const { stdout, stderr } = await exec(command);
-    console.log(stdout);
+    // console.log(stdout);
     console.log(stderr);
   } catch {
     (error) => {
@@ -107,4 +109,55 @@ const createDirectory = async (appPath) => {
 
 const installNPMDependencies = async (appPath) => {
     await runCmd("npm init -y")
+}
+
+const updatePackageJson = async (appPath,input) => {
+    const filename = `${appPath}/package.json`
+
+    const rawData = fs.readFileSync(filename);
+    fs.unlinkSync(filename)
+
+    const data = await JSON.parse(rawData);
+    
+    const dependencies= parsePackageDependencies(input)
+
+    const newData = {...data, ...dependencies}
+    console.log("package.json", newData);
+    const newJSONData = JSON.stringify(newData, null, 2)
+    fs.writeFileSync(filename, newJSONData)
+}
+
+const parsePackageDependencies = (input) => {
+    let defDevDependencies= packageDependencies.devDependencies
+    let defDependencies= packageDependencies.dependencies
+
+    let devPackageKeys= Object.keys(defDevDependencies)
+    let packageKeys= Object.keys(defDependencies)
+
+    let devDependencies={}
+    let dependencies={}
+
+    for (const key of devPackageKeys) {
+        if(typeof defDevDependencies[key]==="string"){
+            devDependencies[key]= defDevDependencies[key]
+            continue;
+        }
+
+        if(defDevDependencies[key].dependentValue === input[defDevDependencies[key].dependency]){
+            devDependencies[key]= defDevDependencies[key].value
+        } 
+    }
+
+    for (const key of packageKeys) {
+        if(typeof defDependencies[key]==="string"){
+            dependencies[key]= defDependencies[key]
+            continue;
+        }
+
+        if(defDependencies[key].dependentValue === input[defDependencies[key].dependency]){
+            dependencies[key]= defDependencies[key].value
+        } 
+    }
+
+    return {devDependencies,dependencies}
 }

@@ -1,5 +1,5 @@
 // import defaultConfig from '../default.json' with { type: 'json' };
-const defaultConfig= require('../default.json');
+const defaultConfig= require('../resources/default.json');
 const inquirer= require('@inquirer/prompts')
 
 const mapCliArgsToOutput=(args)=>{
@@ -38,6 +38,8 @@ const getUserConfig= async (questionConfig)=>{
     for (const key of keys) {
         if(questionConfig[key].implies){
             let dependentKey= Object.keys(questionConfig[key].implies)
+            console.log(dependentKey,"dependentKey");
+            
             if(answer[dependentKey] != questionConfig[key]["implies"][dependentKey] && answer[dependentKey] != undefined){
                 continue;
             }
