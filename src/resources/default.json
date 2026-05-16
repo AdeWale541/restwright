@@ -1,0 +1,104 @@
+{
+        "default": {
+            "default": false,
+            "args":["default","--def"],
+            "question": {
+                "value": "Do you want to use the default configuration?",
+                "type": "confirm"
+            }
+        },
+        "workflow": {
+            "default": true,
+            "args":["--workflow","--wf"],
+            "question": {
+                "value": "Do you want to add a github actions workflow?",
+                "type": "confirm"
+            }
+        },
+        "database": {
+            "default": false,
+            "args":["--database","-d","--db"],
+            "question": {
+                "value": "Do you want to add configuration for database connections and queries?",
+                "type": "confirm"
+            }
+        },
+        "databaseType": {
+            "default":null,
+            "args":["--databasetype","--dbt"],
+            "lov":["pg"],
+            "implies": {
+                "database": true
+            },
+            "question": {
+                "value": "Choose a database type",
+                "type": "select"
+            }
+
+        },
+        "typescript": {
+            "default":false,
+            "args":["--typescript","-t","--ts"],
+            "question": {
+                "value": "Do you want your project to be in typescript?",
+                "type": "confirm"
+            }
+
+        },
+        "webhook": {
+            "default":false,
+            "args":["--webhook","-w","--wh"],
+            "question": {
+                "value": "Do you want to implement a custom integrated reporter?",
+                "type": "confirm"
+            }
+        },
+        "webhookType": {
+            "default":null,
+            "args":["--webhooktype","--wht"],
+            "lov":["slack", "teams"],
+            "implies": {
+                "webhook": true
+            },
+            "question": {
+                "value": "Choose a webhook type",
+                "type": "select"
+            }
+        },
+        "browser": {
+            "default":false,
+            "args":["--browser","-b"],
+            "question": {
+                "value": "Do you want to download any browser?",
+                "type": "confirm"
+            }
+        },
+        "browserType": {
+            "default":null,
+            "args":["--browsertype","--bt"],
+            "lov":["chromium", "webkit","firefox","all"],
+            "implies": {
+                "browser": true
+            },
+            "question": {
+                "value": "Choose a browser type",
+                "type": "select"
+            }
+        },
+        "mcp": {
+            "default":false,
+            "args":["--mcp","-m"],
+            "question": {
+                "value": "Do you want to implement playwright mcp in your project?",
+                "type": "confirm"
+            }
+        },
+        "base": {
+            "default":true,
+            "args":["base","--base"],
+            "question": {
+                "value": "Do you want to add base assertions to your project?",
+                "type": "confirm"
+            }
+        }
+}
