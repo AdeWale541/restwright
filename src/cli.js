@@ -23,9 +23,10 @@ module.exports= createProject = async(args)=>{
 
     await createDirectory(appPath)
     process.chdir(appPath)
-    await installNPMDependencies()
+    await initializeNPM()
     await updatePackageJson(appPath,inputs)
-    await runCmd("npm i")
+    //await runCmd("npm i")
+    await copyTemplateFiles(appPath)
 }
 
 const getConfig=async(rawArgs)=>{
@@ -107,7 +108,7 @@ const createDirectory = async (appPath) => {
     }
 }
 
-const installNPMDependencies = async (appPath) => {
+const initializeNPM = async (appPath) => {
     await runCmd("npm init -y")
 }
 
@@ -160,4 +161,31 @@ const parsePackageDependencies = (input) => {
     }
 
     return {devDependencies,dependencies}
+}
+
+const copyTemplateFiles = async(appPath)=>{
+    const restwrightTemplateDirectory= path.resolve(__dirname, '../templates');
+
+    const files = [
+        {
+            source: path.join(restwrightTemplateDirectory, '.gitignore'),
+            destination: path.join(appPath, '.gitignore')
+        }, 
+        {
+            source: path.join(restwrightTemplateDirectory, '.gitignore'),
+            destination: path.join(appPath, '.gitignore')
+        }
+    ]
+
+    const filesToCopy= files.map(file=> (copyFile(file.source,file.destination)))
+
+    Promise.all(filesToCopy)
+}
+
+const copyFile= async(source,destination)=>{
+    try {
+        fs.promises.copyFile(source,destination)
+    } catch (error) {
+        console.log(styleText(["bold","red"],"Process Failed:"),error);
+    }
 }
